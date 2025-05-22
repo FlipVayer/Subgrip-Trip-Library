@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trucos Difíciles - Subgrip Trick Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #56ccf2;
+      padding: 20px 20px 100px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header img {
+      width: 350px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 8px #56ccf2;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .search-bar input {
+      width: 90%;
+      max-width: 500px;
+      padding: 12px 20px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      border: none;
+      outline: none;
+      background-color: #1e1e1e;
+      color: #56ccf2;
+      box-shadow: 0 0 10px #0f8edb;
+    }
+
+    .trick-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .trick-card {
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 12px #0f8edb;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .trick-card:hover {
+      transform: scale(1.03);
+    }
+
+    .trick-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .trick-info {
+      font-size: 1rem;
+      color: #a0d9ff;
+    }
+
+    /* Footer fijo con descripción */
+    .footer-desc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #1e1e1ecc;
+      color: #56ccf2;
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 1.1rem;
+      box-shadow: 0 -2px 10px #0f8edbaa;
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+    }
+
+    @media (max-width: 480px) {
+      .footer-desc {
+        font-size: 1rem;
+        padding: 12px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="Logo.png" alt="Subgrip Logo" />
+    <h1>Trick Library - Trucos Difíciles</h1>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Buscar truco..." />
+  </div>
+
+  <div class="trick-list" id="trickList">
+    <!-- Aquí se cargarán los trucos con JS -->
+  </div>
+
+  <div class="footer-desc">
+    Dificultad: Difícil. Requiere mucha práctica, control avanzado y un fingerboard de calidad para trucos técnicos y combinados.
+  </div>
+
+  <script>
+    const tricks = [
+      { name: 'Hardflip', tips: 'Kickflip + frontside shuvit, la combinación explosiva.' },
+      { name: 'Laser Flip', tips: 'Heelflip + 360 shuvit, el giro total.' },
+      { name: '360 Flip (Tre Flip)', tips: 'Kickflip + 360 shuvit, la joya clásica.' },
+      { name: 'Varial Heelflip', tips: 'Heelflip + shove-it, para romperla.' },
+      { name: 'Inward Heelflip', tips: 'Heelflip hacia adentro con giro del cuerpo.' },
+      { name: 'Backside 360 Ollie', tips: 'El giro más pesado, 360 completo.' },
+      { name: 'Frontside 360 Ollie', tips: 'Giro frontal completo, elegante y rápido.' },
+      { name: 'Nose Slide Flip Out', tips: 'Deslizar y hacer flip al salir, pura técnica.' },
+      { name: 'Bluntslide', tips: 'Deslizas con la cola en el borde o rail.' },
+      { name: 'Smith Grind', tips: 'Grind con el truck trasero enganchado y el delantero arriba.' },
+      { name: 'Feeble Grind', tips: 'Truck delantero en la borda, el trasero abajo.' },
+      { name: 'Crooked Grind', tips: 'Grind con el truck delantero en ángulo.' },
+      { name: 'Bigspin', tips: 'Shuvit 360 con giro del cuerpo 180, pa’ impresionar.' },
+      { name: 'Backside Flip', tips: 'Backside 180 + kickflip, magia combinada.' },
+      { name: 'Frontside Flip', tips: 'Frontside 180 + kickflip, otro clásico reto.' },
+      { name: 'Hospital Flip', tips: 'Kickflip + varial shuvit combinados.' },
+      { name: 'Casper Flip', tips: 'Flip raro, tabla boca abajo y vuelta.' },
+      { name: 'Impossible', tips: 'La tabla gira 360 vertical, pura locura.' },
+      { name: 'Darkslide', tips: 'Deslizas con la tabla boca abajo en la borda.' },
+      { name: 'Nose Manual Flip Out', tips: 'Manual en el nose con flip para salir.' },
+      { name: 'Blunt to Manual', tips: 'Transición brutal de bluntslide a manual.' },
+      { name: 'Switch Hardflip', tips: 'Hardflip en stance switch, nivel pro.' },
+      { name: 'Switch Laser Flip', tips: 'Laser Flip en switch, la élite.' },
+      { name: 'Backside Bigspin Flip', tips: 'Bigspin + kickflip combinados.' },
+      { name: '360 Double Kickflip', tips: 'Dos kickflips en un 360, nivel dios.' }
+    ];
+
+    const list = document.getElementById('trickList');
+    const search = document.getElementById('searchInput');
+
+    function renderTricks(query = '') {
+      list.innerHTML = '';
+      const filtered = tricks.filter(t =>
+        t.name.toLowerCase().includes(query.toLowerCase())
+      );
+      filtered.forEach(trick => {
+        const card = document.createElement('div');
+        card.className = 'trick-card';
+        card.innerHTML = `
+          <div class="trick-name">${trick.name}</div>
+          <div class="trick-info">Tip: ${trick.tips}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    search.addEventListener('input', () => {
+      renderTricks(search.value);
+    });
+
+    renderTricks();
+  </script>
+</body>
+</html>

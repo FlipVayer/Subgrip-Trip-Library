@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trucos Medios - Subgrip Trick Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #56ccf2;
+      padding: 20px 20px 80px; /* espacio para scroll abajo */
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header img {
+      width: 350px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 8px #56ccf2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 8px #56ccf2;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .search-bar input {
+      width: 90%;
+      max-width: 500px;
+      padding: 12px 20px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      border: none;
+      outline: none;
+      background-color: #1e1e1e;
+      color: #56ccf2;
+      box-shadow: 0 0 10px #0f8edb;
+    }
+
+    .trick-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .trick-card {
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 12px #0f8edb;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .trick-card:hover {
+      transform: scale(1.03);
+    }
+
+    .trick-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #56ccf2;
+    }
+
+    .trick-info {
+      font-size: 1rem;
+      color: #a0d9ff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="Logo.png" alt="Subgrip Logo" />
+    <h1>Trick Library - Trucos Medios</h1>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Buscar truco..." />
+  </div>
+
+  <div class="trick-list" id="trickList">
+    <!-- Aquí se cargarán los trucos con JS -->
+  </div>
+
+  <script>
+    // Lista de trucos medios, distintos a los fáciles
+    const tricks = [
+      { name: 'Kickflip Backside', tips: 'Gira tu cuerpo backside mientras haces el kickflip.' },
+      { name: 'Heelflip Frontside', tips: 'Combina el heelflip con un giro frontside.' },
+      { name: 'Varial Flip', tips: 'Shuvit + kickflip en un solo movimiento.' },
+      { name: 'Pop Shuvit', tips: 'Pop fuerte y empuja con el pie trasero.' },
+      { name: 'Nollie Flip', tips: 'Realiza un kickflip desde el nose de la tabla.' },
+      { name: 'Switch Ollie', tips: 'Ollie en stance inverso, mantén el equilibrio.' },
+      { name: 'Bigspin', tips: 'Combina shuvit con giro del cuerpo de 360°.' },
+      { name: 'Tre Flip', tips: 'Kickflip + shuvit 360, mucho control.' },
+      { name: 'Hardflip', tips: 'Kickflip con giro frontal, tricky pero poderoso.' },
+      { name: 'Inward Heelflip', tips: 'Heelflip con giro del cuerpo backside.' },
+      { name: 'Manual to Nose Manual', tips: 'Transición suave entre manual y nose manual.' },
+      { name: 'Casper Flip', tips: 'Voltea la tabla con el pie y haz flip.' },
+      { name: 'Lazer Flip', tips: 'Heelflip + 360 shuvit, espectacular.' },
+      { name: 'No Comply', tips: 'Salta con el pie delantero y levanta la tabla.' },
+      { name: 'Pressure Flip', tips: 'Usa presión con el pie trasero para hacer flip.' },
+      { name: 'Bluntslide', tips: 'Desliza con la cola de la tabla sobre un borde.' },
+      { name: 'Smith Grind', tips: 'Grinding con el truck trasero, balance fino.' },
+      { name: 'Feeble Grind', tips: 'Grinding con truck delantero y trasero en posiciones opuestas.' },
+      { name: 'Crooked Grind', tips: 'Grinding con el nose de la tabla, estilo.' },
+      { name: 'Nosegrind', tips: 'Grinding sólo con el nose, control máximo.' },
+      { name: 'Wallride', tips: 'Desliza la tabla sobre la pared, flow total.' },
+      { name: 'Switch Kickflip', tips: 'Kickflip con stance inverso, dominio de pies.' },
+      { name: 'Frontside Flip', tips: 'Kickflip combinado con giro frontside.' },
+      { name: 'Backside Flip', tips: 'Kickflip combinado con giro backside.' },
+      { name: 'Darkslide', tips: 'Desliza la tabla boca abajo, nivel pro.' }
+    ];
+
+    const list = document.getElementById('trickList');
+    const search = document.getElementById('searchInput');
+
+    function renderTricks(query = '') {
+      list.innerHTML = '';
+      const filtered = tricks.filter(t =>
+        t.name.toLowerCase().includes(query.toLowerCase())
+      );
+
+      filtered.forEach(trick => {
+        const card = document.createElement('div');
+        card.className = 'trick-card';
+        card.innerHTML = `
+          <div class="trick-name">${trick.name}</div>
+          <div class="trick-info">Tip: ${trick.tips}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    search.addEventListener('input', () => {
+      renderTricks(search.value);
+    });
+
+    renderTricks();
+  </script>
+</body>
+</html>
