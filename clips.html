@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Graba tu truco - Subgrip Fingerboard</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0;
+    padding: 0 20px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  header {
+    margin: 20px 0;
+  }
+  header img {
+    width: 350px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  select, button {
+    font-size: 1.1rem;
+    padding: 10px;
+    margin: 10px 5px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background-color: #56ccf2;
+    color: #121212;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  select:disabled, button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  select:hover:not(:disabled), button:hover:not(:disabled) {
+    background-color: #39b0f7;
+  }
+  #trick-description {
+    margin: 10px 0 25px;
+    font-size: 1rem;
+    font-style: italic;
+    min-height: 50px;
+    text-align: center;
+  }
+  video {
+    border-radius: 10px;
+    background: black;
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  #recording-status {
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="Logo.png" alt="Logo Subgrip" />
+</header>
+
+<h1>Graba tu truco</h1>
+
+<label for="trick-select">Elige tu truco:</label><br />
+<select id="trick-select">
+  <option value="Ollie">Ollie</option>
+  <option value="Manual">Manual</option>
+  <option value="Pop Shuvit">Pop Shuvit</option>
+  <option value="Nose Manual">Nose Manual</option>
+  <option value="Shuvit">Shuvit</option>
+  <option value="180 Ollie">180 Ollie</option>
+  <option value="Kickturn">Kickturn</option>
+  <option value="Boneless">Boneless</option>
+  <option value="180 Shuvit">180 Shuvit</option>
+  <option value="Boardslide">Boardslide</option>
+  <option value="Nollie">Nollie</option>
+  <option value="Fakie Ollie">Fakie Ollie</option>
+  <option value="Heel Flip">Heel Flip</option>
+  <option value="Backside 180">Backside 180</option>
+  <option value="Frontside 180">Frontside 180</option>
+  <option value="Shove-it">Shove-it</option>
+  <option value="Manual to Fakie">Manual to Fakie</option>
+  <option value="Switch Ollie">Switch Ollie</option>
+  <option value="Pop Shuvit Fakie">Pop Shuvit Fakie</option>
+  <option value="Rail Stand">Rail Stand</option>
+  <option value="Slappy Grind">Slappy Grind</option>
+  <option value="Kickflip">Kickflip</option>
+  <option value="Heelflip">Heelflip</option>
+  <option value="Fakie Manual">Fakie Manual</option>
+  <option value="Ollie North">Ollie North</option>
+</select>
+
+<div id="trick-description"></div>
+
+<div style="text-align:center;">
+  <button id="start-camera-btn">Iniciar Cámara Trasera</button>
+  <button id="start-recording-btn" disabled>Empezar Grabación</button>
+  <button id="stop-recording-btn" disabled>Detener Grabación</button>
+</div>
+
+<div id="recording-status"></div>
+
+<video id="video" autoplay playsinline></video>
+<video id="recorded-video" controls style="display:none;"></video>
+
+<script>
+  const tricks = {
+    'Ollie': 'El básico para todos, salta con la tabla.',
+    'Manual': 'Equilibrio en dos ruedas, fluye y no caigas.',
+    'Pop Shuvit': 'Gira la tabla 180° rápido con un pop suave.',
+    'Nose Manual': 'Manual pero con el nose, más estilo.',
+    'Shuvit': 'Gira la tabla 180° sin flip.',
+    '180 Ollie': 'Gira todo tu cuerpo y tabla 180°.',
+    'Kickturn': 'Gira la tabla sobre el tail en la rampa.',
+    'Boneless': 'Baja el pie y agarra la tabla antes de saltar.',
+    '180 Shuvit': 'Shuvit con giro del cuerpo 180°.',
+    'Boardslide': 'Desliza la tabla sobre un rail o borde.',
+    'Nollie': 'Ollie desde el nose de la tabla.',
+    'Fakie Ollie': 'Ollie en dirección contraria.',
+    'Heel Flip': 'Haz que la tabla gire con el talón.',
+    'Backside 180': 'Gira tu cuerpo y tabla hacia atrás 180°.',
+    'Frontside 180': 'Giro hacia adelante 180° con tabla y cuerpo.',
+    'Shove-it': 'Gira la tabla 180° sin flip (otra variante).',
+    'Manual to Fakie': 'Transición de manual a fakie.',
+    'Switch Ollie': 'Ollie en stance inverso.',
+    'Pop Shuvit Fakie': 'Pop shuvit pero en fakie.',
+    'Rail Stand': 'Pararte sobre los trucks en el rail.',
+    'Slappy Grind': 'Desliza con el truck delantero en la borda.',
+    'Kickflip': 'Haz que la tabla gire 360° con el pie.',
+    'Heelflip': 'Tabla gira con el talón, básico pero efectivo.',
+    'Fakie Manual': 'Manual pero andando en fakie.',
+    'Ollie North': 'Ollie mientras agarras el nose.'
+  };
+
+  const trickSelect = document.getElementById('trick-select');
+  const trickDescription = document.getElementById('trick-description');
+  const videoElement = document.getElementById('video');
+  const recordedVideo = document.getElementById('recorded-video');
+  const startCameraBtn = document.getElementById('start-camera-btn');
+  const startRecordingBtn = document.getElementById('start-recording-btn');
+  const stopRecordingBtn = document.getElementById('stop-recording-btn');
+  const recordingStatus = document.getElementById('recording-status');
+
+  let stream;
+  let mediaRecorder;
+  let recordedChunks = [];
+
+  // Muestra la descripción al cargar la página
+  window.onload = () => {
+    trickDescription.textContent = tricks[trickSelect.value];
+  };
+
+  trickSelect.onchange = () => {
+    trickDescription.textContent = tricks[trickSelect.value];
+  };
+
+  startCameraBtn.onclick = async () => {
+    try {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: "environment" } },
+        audio: false
+      });
+      videoElement.srcObject = stream;
+      startRecordingBtn.disabled = false;
+      recordingStatus.textContent = '';
+      recordedVideo.style.display = 'none';
+      recordedVideo.src = '';
+    } catch (error) {
+      alert('No se pudo acceder a la cámara trasera. Revisa permisos o prueba otro navegador.');
+      console.error(error);
+    }
+  };
+
+  startRecordingBtn.onclick = () => {
+    if (!stream) return alert('Primero inicia la cámara.');
+
+    recordedChunks = [];
+    mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+
+    mediaRecorder.ondataavailable = e => {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+
+    mediaRecorder.onstart = () => {
+      recordingStatus.textContent = 'Grabando... 🔴';
+      startRecordingBtn.disabled = true;
+      stopRecordingBtn.disabled = false;
+      startCameraBtn.disabled = true;
+      trickSelect.disabled = true;
+    };
+
+    mediaRecorder.onstop = () => {
+      recordingStatus.textContent = 'Grabación detenida. Reproduciendo video... 🎬';
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      recordedVideo.src = URL.createObjectURL(blob);
+      recordedVideo.style.display = 'block';
+
+      startRecordingBtn.disabled = false;
+      stopRecordingBtn.disabled = true;
+      startCameraBtn.disabled = false;
+      trickSelect.disabled = false;
+    };
+
+    mediaRecorder.start();
+  };
+
+  stopRecordingBtn.onclick = () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+    }
+  };
+</script>
+
+</body>
+</html>
